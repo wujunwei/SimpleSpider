@@ -7,3 +7,5 @@
 *.log
 out
 gen
+__pycache__
+config.*

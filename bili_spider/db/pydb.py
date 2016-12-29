@@ -58,7 +58,7 @@ def update_user(user_id=0, data=None):
     for key in data.keys():
         sql += ' ' + str(key) + ' = \'' + str(data[key]) + '\' ,'
     sql = sql.rstrip(',') + 'where id = ' + str(user_id)
-    print(sql)
+    # print(sql)
     cursor.execute(sql)
     conn.commit()
     return cursor.lastrowid
@@ -72,7 +72,7 @@ def update_extend_user(user_id=0, data=None):
     sql = 'update  extend_info set '
     for key in data.keys():
         sql += ' ' + str(key) + ' = \'' + str(data[key]) + '\' ,'
-    print(sql)
+    # print(sql)
     sql = sql.rstrip(',') + 'where user_id = ' + str(user_id)
     cursor.execute(sql)
     conn.commit()
