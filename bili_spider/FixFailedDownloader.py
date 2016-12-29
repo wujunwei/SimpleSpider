@@ -8,7 +8,7 @@ from bili_spider.user_info import *
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 driver = webdriver.PhantomJS(desired_capabilities=DesiredCapabilities.PHANTOMJS)
 url = ("http://space.bilibili.com/", "/#!/index")
-last_id = 18500
+last_id = 19268
 info_arr = pydb.get_fail_user(last_id)
 for j in info_arr:
     i = j[0]

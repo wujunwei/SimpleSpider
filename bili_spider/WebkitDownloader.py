@@ -41,7 +41,7 @@ for i in range(start, start + step):
     except Exception as e:
         print(e)
         exit()
-    if j % 100:
+    if j % 100 == 0:
         time.sleep(60)
 end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print("Spider start at %s , All finished successfully at %s !" % (start_time, end_time))
