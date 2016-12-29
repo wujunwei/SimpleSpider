@@ -21,7 +21,7 @@ def random_str(random_length=8):
 
 
 def insert_user(data=None):
-    if (data['name'] == 'None') or (data['name'] == ''):
+    if data == {} or (data['name'] == 'None') or (data['name'] == ''):
         data = {'name': random_str()}
     else:
         data['add_time'] = time.time()
@@ -43,7 +43,6 @@ def insert_extend_user(user_id=0, data=None):
     sql = 'insert into extend_info set '
     for key in data.keys():
         sql += ' ' + str(key) + ' = \'' + str(data[key]) + '\' ,'
-    # print(sql)
     sql = sql.rstrip(',')
     cursor.execute(sql)
     conn.commit()
@@ -61,7 +60,6 @@ def update_user(user_id=0, data=None):
     # print(sql)
     cursor.execute(sql)
     conn.commit()
-    return cursor.lastrowid
 
 
 def update_extend_user(user_id=0, data=None):

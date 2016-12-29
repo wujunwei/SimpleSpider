@@ -17,8 +17,32 @@ extend_config = {
 }
 
 
-def deal_user_info(data):
+def deal_api_data(data):
+    info = {}
+    extend_info = {}
+    try:
+        info['name'] = data['name']
+        if data['sex'] == '男':
+            info['gender'] = 1
+        else:
+            if data['sex'] == '女':
+                info['gender'] = 0
+            else:
+                info['gender'] = -1
+        info['location'] = data['place'] or '未填写'
+        info['register_time'] = data['regtime']
+        info['level'] = data['level_info']['current_level']
+        extend_info['fans_num'] = data['fans']
+        extend_info['follow_num'] = data['friend']
+        extend_info['sign'] = data['sign'].replace('\'', '#')
+        extend_info['birthday'] = data['birthday'][5:]
+        extend_info['head_img'] = data['face']
+        return info, extend_info
+    except:
+        return {}, {}
 
+
+def deal_user_info(data):
     for key in data.keys():
         try:
             func = "deal_" + str(key)
@@ -90,4 +114,3 @@ def deal_fans_num(fans_num):
 
 def deal_location(location):
     return location
-
