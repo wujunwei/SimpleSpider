@@ -77,7 +77,7 @@ def update_extend_user(user_id=0, data=None):
 
 
 def get_fail_user(last_id=0):
-    sql = 'select id from user_info where id > ' + str(last_id) + " and register_time = 0 "
+    sql = 'select id from user_info where id > ' + str(last_id) + " and register_time = 0 and location != '未填写'"
     cursor.execute(sql)
     result = cursor.fetchall()
     conn.commit()
