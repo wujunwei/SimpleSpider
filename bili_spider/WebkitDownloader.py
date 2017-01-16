@@ -14,40 +14,40 @@ j = 0
 delay_seconds = 1.3
 for i in range(start, start + step):
     j += 1
-    data = {}
-    extend_data = {}
     target = "{0}{1}{2}".format(url[0], str(i), url[1])
     print("try to search %s :" % target)
     driver.get(target)
     if len(etree.HTML(driver.page_source).xpath("//div[@class='errmsg']")) != 0:
         print("NO.%d 404 !" % i)
-        continue
-    time.sleep(delay_seconds)
-    tree = etree.HTML(driver.page_source)
+    else:
+        data = {}
+        extend_data = {}
+        time.sleep(delay_seconds)
+        tree = etree.HTML(driver.page_source)
+        if len(tree.xpath("//div[@class='errmsg']")) != 0:
+            print("NO.%d 404 !" % i)
+            continue
+        for key in user_config.keys():
+            try:
+                data[key] = tree.xpath(user_config[key]).pop()
+            except IndexError as e:
+                data[key] = ''
+        data = deal_user_info(data)
+        data['id'] = i
 
-    for key in user_config.keys():
+        for key in extend_config.keys():
+            try:
+                extend_data[key] = tree.xpath(extend_config[key]).pop()
+            except IndexError as e:
+                extend_data[key] = ''
+        extend_data = deal_user_info(extend_data)
         try:
-            data[key] = tree.xpath(user_config[key]).pop()
-        except IndexError as e:
-            data[key] = ''
-    data = deal_user_info(data)
-    data['id'] = i
-
-    for key in extend_config.keys():
-        try:
-            extend_data[key] = tree.xpath(extend_config[key]).pop()
-        except IndexError as e:
-            extend_data[key] = ''
-    extend_data = deal_user_info(extend_data)
-    try:
-        user_id = pydb.insert_user(data)
-        pydb.insert_extend_user(user_id, extend_data)
-        print("NO.%d Successfully !" % j)
-    except Exception as e:
-        print(e)
-        exit()
-    # if j % 500 == 0:
-    #     time.sleep(10)
+            user_id = pydb.insert_user(data)
+            pydb.insert_extend_user(user_id, extend_data)
+            print("NO.%d Successfully !" % j)
+        except Exception as e:
+            print(e)
+            exit()
 end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print("Spider start at %s , All finished successfully at %s !" % (start_time, end_time))
 driver.quit()
