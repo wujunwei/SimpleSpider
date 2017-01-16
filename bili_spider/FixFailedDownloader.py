@@ -8,7 +8,7 @@ from bili_spider.user_info import *
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 driver = webdriver.PhantomJS(desired_capabilities=DesiredCapabilities.PHANTOMJS)
 url = ("http://space.bilibili.com/", "/#!/index")
-last_id = 43963
+last_id = 6166
 info_arr = pydb.get_fail_user(last_id)
 for j in info_arr:
     i = j[0]
@@ -19,6 +19,11 @@ for j in info_arr:
     driver.get(target)
     time.sleep(1.5)
     tree = etree.HTML(driver.page_source)
+
+    if len(tree.xpath("//div[@class='errmsg']")) != 0:
+        print("NO.%d 404 !" % i)
+        continue
+
     for key in user_config.keys():
         try:
             data[key] = tree.xpath(user_config[key]).pop()

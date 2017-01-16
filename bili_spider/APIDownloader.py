@@ -11,6 +11,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from lxml import etree
 from bili_spider.user_info import *
 
+
 def get_cookie_from_chrome(host='.bilibili.com'):
     cookie_path = os.environ['LOCALAPPDATA'] + r"\Google\Chrome\User Data\Default\Cookies"
     sql = "select host_key,name,encrypted_value from cookies where host_key='%s'" % host
@@ -19,6 +20,8 @@ def get_cookie_from_chrome(host='.bilibili.com'):
         cookies = {name: CryptUnprotectData(encrypted_value)[1].decode() for host_key, name, encrypted_value in
                    cu.execute(sql).fetchall()}
         return cookies
+
+
 # 运行环境windows10 python3.5 x64 chrome 50
 
 def get_info(id=1):
@@ -26,14 +29,16 @@ def get_info(id=1):
     httphead = {'Referer': 'http://space.bilibili.com/',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
                 }
-    data = {'mid': id, '_': int(time.time()*1000)}
+    data = {'mid': id, '_': int(time.time() * 1000)}
     try:
-        r = requests.post(url, data=data, headers=httphead, cookies=get_cookie_from_chrome('.bilibili.com'), allow_redirects=1)
+        r = requests.post(url, data=data, headers=httphead, cookies=get_cookie_from_chrome('.bilibili.com'),
+                          allow_redirects=1)
         decode_json = json.loads(r.text)
         return decode_json['data']
     except Exception as e:
         print(e)
         return {}
+
 
 step = 1000
 start = int(pydb.get_next_id())
@@ -43,7 +48,7 @@ for i in range(start, start + step):
     j += 1
     res = get_info(i)
     if res == {}:
-        g +=1
+        g += 1
         if g > 50:
             exit("wrong ip ")
     data, extend_data = deal_api_data(res)

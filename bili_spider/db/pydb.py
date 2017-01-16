@@ -85,11 +85,11 @@ def get_fail_user(last_id=0):
 
 
 def get_next_id():
-    sql = "select AUTO_INCREMENT from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'user_info'  "
+    sql = "select max(id) from user_info"
     cursor.execute(sql)
     result = cursor.fetchone()
     conn.commit()
-    return result[0]
+    return result[0] + 1
 
 
 def close():
