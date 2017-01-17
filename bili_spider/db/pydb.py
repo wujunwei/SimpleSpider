@@ -22,7 +22,7 @@ def random_str(random_length=8):
 
 def insert_user(data=None):
     if data == {} or (data['name'] == 'None') or (data['name'] == ''):
-        data = {'name': random_str()}
+        data['name'] = random_str()
     else:
         data['add_time'] = time.time()
     sql = 'insert into user_info set '

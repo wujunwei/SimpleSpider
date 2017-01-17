@@ -8,12 +8,10 @@ from bili_spider.user_info import *
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 driver = webdriver.PhantomJS(desired_capabilities=DesiredCapabilities.PHANTOMJS)
 url = ("http://space.bilibili.com/", "/#!/index")
-step = 1000
+step = 10000
 start = int(pydb.get_next_id())
-j = 0
 delay_seconds = 1.3
 for i in range(start, start + step):
-    j += 1
     target = "{0}{1}{2}".format(url[0], str(i), url[1])
     print("try to search %s :" % target)
     driver.get(target)
@@ -24,9 +22,6 @@ for i in range(start, start + step):
         extend_data = {}
         time.sleep(delay_seconds)
         tree = etree.HTML(driver.page_source)
-        if len(tree.xpath("//div[@class='errmsg']")) != 0:
-            print("NO.%d 404 !" % i)
-            continue
         for key in user_config.keys():
             try:
                 data[key] = tree.xpath(user_config[key]).pop()
@@ -34,6 +29,7 @@ for i in range(start, start + step):
                 data[key] = ''
         data = deal_user_info(data)
         data['id'] = i
+        print(data)
 
         for key in extend_config.keys():
             try:
@@ -44,7 +40,7 @@ for i in range(start, start + step):
         try:
             user_id = pydb.insert_user(data)
             pydb.insert_extend_user(user_id, extend_data)
-            print("NO.%d Successfully !" % j)
+            print("NO.%d Successfully !" % i)
         except Exception as e:
             print(e)
             exit()

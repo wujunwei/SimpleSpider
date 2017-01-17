@@ -113,4 +113,4 @@ def deal_fans_num(fans_num):
 
 
 def deal_location(location):
-    return location
+    return location or ''
