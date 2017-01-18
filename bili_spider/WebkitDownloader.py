@@ -8,7 +8,7 @@ from bili_spider.user_info import *
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 driver = webdriver.PhantomJS(desired_capabilities=DesiredCapabilities.PHANTOMJS)
 url = ("http://space.bilibili.com/", "/#!/index")
-step = 8000
+step = 1000
 start = int(pydb.get_next_id())
 delay_seconds = 1.3
 j = 0
@@ -44,7 +44,11 @@ for i in range(start, start + step):
             print("NO.%d Successfully !" % j)
         except Exception as e:
             print(e)
-            exit()
+            data['name'] += '*'
+            user_id = pydb.insert_user(data)
+            pydb.insert_extend_user(user_id, extend_data)
+            print("NO.%d Successfully !" % j)
+
 end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print("Spider start at %s , All finished successfully at %s !" % (start_time, end_time))
 driver.quit()
