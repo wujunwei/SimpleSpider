@@ -8,7 +8,7 @@ from bili_spider.user_info import *
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 driver = webdriver.PhantomJS(desired_capabilities=DesiredCapabilities.PHANTOMJS)
 url = ("http://space.bilibili.com/", "/#!/index")
-step = 1000
+step = 5000
 start = int(pydb.get_next_id())
 delay_seconds = 1.3
 j = 0
