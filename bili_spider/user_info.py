@@ -105,12 +105,17 @@ def deal_follow_num(follow_num):
         return 0
 
 
-def deal_fans_num(fans_num):
+def deal_fans_num(fans_num: str):
     if fans_num.isdigit():
         return int(fans_num)
     else:
-        return 0
+        num = fans_num.rstrip('万').rstrip(' ').lstrip(' ')
+        if len(num) < len(fans_num):
+            return float(num) * 10000
+        else:
+            return 0
 
 
 def deal_location(location):
     return location or ''
+
