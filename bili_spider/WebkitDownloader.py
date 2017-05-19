@@ -8,7 +8,7 @@ from bili_spider.user_info import *
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 driver = webdriver.PhantomJS(desired_capabilities=DesiredCapabilities.PHANTOMJS)
 url = ("http://space.bilibili.com/", "/#!/index")
-step = 10000
+step = 5000
 start = int(pydb.get_next_id())
 delay_seconds = 1.3
 j = 0
@@ -17,7 +17,7 @@ for i in range(start, start + step):
     target = "{0}{1}{2}".format(url[0], str(i), url[1])
     print("try to search %s :" % target)
     driver.get(target)
-    if len(etree.HTML(driver.page_source).xpath("//div[@class='errmsg']")) != 0:
+    if len(etree.HTML(driver.page_source).xpath("//div[@class='error-container']")) != 0:
         print("NO.%d 404 !" % i)
     else:
         data = {}

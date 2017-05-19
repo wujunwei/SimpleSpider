@@ -20,7 +20,7 @@ for j in info_arr:
     time.sleep(1.5)
     tree = etree.HTML(driver.page_source)
 
-    if len(tree.xpath("//div[@class='errmsg']")) != 0:
+    if len(tree.xpath("//div[@class='error-container']")) != 0:
         print("NO.%d 404 !" % i)
         continue
 
