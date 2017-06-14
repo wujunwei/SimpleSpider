@@ -15,9 +15,10 @@ def if_404(browser):
 
 
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+service_args = ['--load-images=no', '--disk-cache=yes', '--ignore-ssl-errors=true']
 options = webdriver.ChromeOptions()
-driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME)
-driver.set_window_position(-10000, 0)
+options.add_argument('headless')
+driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME,chrome_options=options , service_args=service_args)
 url = ("http://space.bilibili.com/", "/#!/index")
 step = 5000
 start = int(pydb.get_next_id())

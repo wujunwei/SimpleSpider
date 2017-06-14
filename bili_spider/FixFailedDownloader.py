@@ -1,5 +1,5 @@
 from selenium.common.exceptions import NoAlertPresentException
-
+from pyvirtualdisplay import Display
 from bili_spider.db import pydb
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -18,9 +18,9 @@ def if_404(browser):
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 options = webdriver.ChromeOptions()
 options.add_argument('lang=zh_CN.UTF-8')
-
+display = Display(visible=0, size=(800, 600))
+display.start()
 driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME, chrome_options=options)
-driver.set_window_position(-10000,0)
 url = ("http://space.bilibili.com/", "/#!/index")
 last_id = 68559
 info_arr = pydb.get_fail_user(last_id)
