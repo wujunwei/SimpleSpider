@@ -1,12 +1,24 @@
-
+from selenium.common.exceptions import NoAlertPresentException
 from bili_spider.db import pydb
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from lxml import etree
 from bili_spider.user_info import *
 
+
+def if_404(browser):
+    try:
+        browser.switch_to.alert.accept()
+        return True
+    except NoAlertPresentException:
+        return False
+
+
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-driver = webdriver.PhantomJS(desired_capabilities=DesiredCapabilities.PHANTOMJS)
+options = webdriver.ChromeOptions()
+options.add_argument('lang=zh_CN.UTF-8')
+
+driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME, chrome_options=options)
 url = ("http://space.bilibili.com/", "/#!/index")
 step = 5000
 start = int(pydb.get_next_id())
@@ -17,7 +29,8 @@ for i in range(start, start + step):
     target = "{0}{1}{2}".format(url[0], str(i), url[1])
     print("try to search %s :" % target)
     driver.get(target)
-    if len(etree.HTML(driver.page_source).xpath("//div[@class='error-container']")) != 0:
+    time.sleep(delay_seconds)
+    if if_404(driver):
         print("NO.%d 404 !" % i)
     else:
         data = {}
@@ -45,6 +58,7 @@ for i in range(start, start + step):
         except Exception as e:
             print(e)
             data['name'] += '*'
+
             user_id = pydb.insert_user(data)
             pydb.insert_extend_user(user_id, extend_data)
             print("NO.%d Successfully !" % j)
