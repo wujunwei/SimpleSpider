@@ -1,3 +1,4 @@
+from selenium.common.exceptions import NoAlertPresentException
 
 from bili_spider.db import pydb
 from selenium import webdriver
@@ -5,8 +6,21 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from lxml import etree
 from bili_spider.user_info import *
 
+
+def if_404(browser):
+    try:
+        browser.switch_to.alert.accept()
+        return True
+    except NoAlertPresentException:
+        return False
+
+
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-driver = webdriver.PhantomJS(desired_capabilities=DesiredCapabilities.PHANTOMJS)
+options = webdriver.ChromeOptions()
+options.add_argument('lang=zh_CN.UTF-8')
+
+driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME, chrome_options=options)
+driver.set_window_position(-10000,0)
 url = ("http://space.bilibili.com/", "/#!/index")
 last_id = 68559
 info_arr = pydb.get_fail_user(last_id)
@@ -17,12 +31,11 @@ for j in info_arr:
     target = "{0}{1}{2}".format(url[0], str(i), url[1])
     print("try to search %s :" % target)
     driver.get(target)
-    time.sleep(1.5)
-    tree = etree.HTML(driver.page_source)
-
-    if len(tree.xpath("//div[@class='error-container']")) != 0:
+    if if_404(driver):
         print("NO.%d 404 !" % i)
         continue
+    time.sleep(1.5)
+    tree = etree.HTML(driver.page_source)
 
     for key in user_config.keys():
         try:
