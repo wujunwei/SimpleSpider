@@ -12,8 +12,8 @@ extend_config = {
     'head_img': "//div[@class='h-avatar']/img/@src",
     'sign': "//div[@class='h-sign']/text()",
     'birthday': "//div[@class='item birthday']/span[@class='text']/text()",
-    'follow_num': "//div[@class='friend-data']/a[@href='#!/fans/follow']/span[@class='quantity']/text()",
-    'fans_num': "//div[@class='friend-data']/a[@href='#!/fans/fans']/span[@class='quantity space-fans']/text()"
+    'follow_num': "//a[@href='#!/fans/follow']/p[@class='n-data-v space-attention']/text()",
+    'fans_num': "//a[@href='#!/fans/fans']/p[@class='n-data-v space-fans']/text()"
 }
 
 
