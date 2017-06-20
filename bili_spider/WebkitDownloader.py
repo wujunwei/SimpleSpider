@@ -37,7 +37,7 @@ for i in range(start, start + step):
         data = {}
         extend_data = {}
         time.sleep(delay_seconds)
-        if if_404(driver):
+        if if_404(driver):  # 防止网络延迟
             print("NO.%d 404 !" % i)
             continue
         tree = etree.HTML(driver.page_source)
@@ -70,4 +70,3 @@ for i in range(start, start + step):
 end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print("Spider start at %s , All finished successfully at %s !" % (start_time, end_time))
 driver.quit()
-
