@@ -1,3 +1,5 @@
+import os
+
 from selenium.common.exceptions import NoAlertPresentException
 from bili_spider.db import pydb
 from selenium import webdriver
@@ -20,7 +22,7 @@ options.add_argument('lang=zh_CN.UTF-8')
 driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME, chrome_options=options)
 driver.set_window_position(-10000, 0)
 url = ("http://space.bilibili.com/", "/#!/index")
-last_id = 68559
+last_id = 0
 info_arr = pydb.get_fail_user(last_id)
 for j in info_arr:
     i = j[0]
@@ -60,4 +62,10 @@ pydb.close()
 end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print("Spider start at %s , %d finished successfully at %s !" % (start_time, len(info_arr), end_time))
 driver.quit()
+
+# delete log
+if os.path.exists('./tmp/lock.lock'):
+    os.remove('./tmp/lock.lock')
+
+
 

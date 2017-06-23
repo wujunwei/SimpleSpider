@@ -84,6 +84,14 @@ def get_fail_user(last_id=0):
     return result
 
 
+def delete_fail_user():
+    sql = "delete from user_info where  register_time = 0 and location != '未填写'"
+    cursor.execute(sql)
+    result = cursor.rowcount
+    conn.commit()
+    return result
+
+
 def get_next_id():
     sql = "select max(id) from user_info"
     cursor.execute(sql)
