@@ -18,19 +18,19 @@ start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 service_args = ['--load-images=no', '--disk-cache=yes', '--ignore-ssl-errors=true']
 # options = webdriver.ChromeOptions()
 # options.add_argument('headless')
-driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME, service_args=service_args)
+driver = webdriver.Chrome(executable_path=r'./library/chromedriver.exe', desired_capabilities=DesiredCapabilities.CHROME, service_args=service_args)
 driver.set_window_position(-10000, 0)
 url = ("http://space.bilibili.com/", "/#!/index")
-step = 5000
+step = 1000
 start = int(pydb.get_next_id())
-delay_seconds = 0.9
+delay_seconds = 0.7
 j = 0
 for i in range(start, start + step):
     j += 1
     target = "{0}{1}{2}".format(url[0], str(i), url[1])
     print("try to search %s :" % target)
     driver.get(target)
-    time.sleep(0.3)
+    time.sleep(0.5)
     if if_404(driver):
         print("NO.%d 404 !" % i)
     else:

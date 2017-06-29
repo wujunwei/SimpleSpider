@@ -19,7 +19,7 @@ def if_404(browser):
 start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 options = webdriver.ChromeOptions()
 options.add_argument('lang=zh_CN.UTF-8')
-driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME, chrome_options=options)
+driver = webdriver.Chrome(executable_path=r'./library/chromedriver.exe', desired_capabilities=DesiredCapabilities.CHROME, chrome_options=options)
 driver.set_window_position(-10000, 0)
 url = ("http://space.bilibili.com/", "/#!/index")
 last_id = 0
