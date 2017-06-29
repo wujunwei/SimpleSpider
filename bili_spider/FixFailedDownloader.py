@@ -57,7 +57,11 @@ for j in info_arr:
         print("NO.%d Successfully !" % i)
     except Exception as e:
         print(e)
-        exit()
+        data['name'] += '*'
+        user_id = pydb.insert_user(data)
+        pydb.insert_extend_user(user_id, extend_data)
+        print("NO.%d Successfully !" % j)
+
 pydb.close()
 end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print("Spider start at %s , %d finished successfully at %s !" % (start_time, len(info_arr), end_time))

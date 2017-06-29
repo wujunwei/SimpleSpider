@@ -86,8 +86,10 @@ def get_fail_user(last_id=0):
 
 def delete_fail_user():
     sql = "delete from user_info where  register_time = 0 and location != '未填写'"
+    sql_2 = "DELETE FROM extend_info WHERE `head_img` = ''"
     cursor.execute(sql)
     result = cursor.rowcount
+    cursor.execute(sql_2)
     conn.commit()
     return result
 

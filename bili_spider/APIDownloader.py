@@ -6,9 +6,7 @@ import time
 import requests
 
 from bili_spider.db import pydb
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from lxml import etree
+
 from bili_spider.user_info import *
 
 
@@ -24,10 +22,11 @@ def get_cookie_from_chrome(host='.bilibili.com'):
 
 # 运行环境windows10 python3.5 x64 chrome 50
 
-def get_info(id=1):
+def get_info(id):
     url = 'http://space.bilibili.com/ajax/member/GetInfo'
     httphead = {'Referer': 'http://space.bilibili.com/',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                              'Chrome/50.0.2661.102 Safari/537.36 '
                 }
     data = {'mid': id, '_': int(time.time() * 1000)}
     try:
@@ -37,36 +36,41 @@ def get_info(id=1):
         return decode_json['data']
     except Exception as e:
         print(e)
-        return {}
+        return None
 
 
+start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 step = 1000
 start = int(pydb.get_next_id())
 j = 0
-g = 0
+
 for i in range(start, start + step):
     j += 1
     res = get_info(i)
-    if res == {}:
-        g += 1
-        if g > 50:
-            exit("wrong ip ")
     data, extend_data = deal_api_data(res)
-    print("try to search id:%s" % i)
-    # print(data, extend_data)
+
+    if extend_data == {} or data == {}:
+        print("NO.%d 404 !" % i)
+        continue
+    data['id'] = i
+    extend_data['user_id'] = i
+    print(data, extend_data)
     try:
         user_id = pydb.insert_user(data)
         pydb.insert_extend_user(user_id, extend_data)
         print("NO.%d Successfully !" % i)
     except Exception as e:
         print(e)
-        exit()
+        data['name'] += '*'
+        user_id = pydb.insert_user(data)
+        pydb.insert_extend_user(user_id, extend_data)
+        print("NO.%d Successfully !" % j)
 
-    if j > 50:
+    if j > 50 and i < start + step:
         j = 0
-        time.sleep(15)
+        time.sleep(10)
     else:
-        time.sleep(0.3)
+        time.sleep(0.2)
 end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-print("Spider start at %s , All finished successfully at %s !" % end_time)
+print("Spider start at %s , All finished successfully at %s !" % (start_time, end_time))
 pydb.close()

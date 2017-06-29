@@ -21,7 +21,7 @@ service_args = ['--load-images=no', '--disk-cache=yes', '--ignore-ssl-errors=tru
 driver = webdriver.Chrome(desired_capabilities=DesiredCapabilities.CHROME, service_args=service_args)
 driver.set_window_position(-10000, 0)
 url = ("http://space.bilibili.com/", "/#!/index")
-step = 1000
+step = 5000
 start = int(pydb.get_next_id())
 delay_seconds = 0.9
 j = 0

@@ -13,7 +13,10 @@ if not os.path.exists(path):
 if os.path.exists(path + file_name):
     print('operator locked  \r\nplease run FixFailedDownloader.py first')
     exit()
-
+limit = pydb.get_fail_user()
+if len(limit) > 50:
+    print("please check the num of 404 people")
+    exit()
 num = pydb.delete_fail_user()
 print('delete %d rows' % num)
 
