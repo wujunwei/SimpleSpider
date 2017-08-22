@@ -76,8 +76,8 @@ def update_extend_user(user_id=0, data=None):
     conn.commit()
 
 
-def get_fail_user(last_id=0):
-    sql = 'select id from user_info where id > ' + str(last_id) + " and register_time = 0 and location != '未填写'"
+def get_fail_user():
+    sql = 'select id from user_info where  register_time = 0 and level = 0 and location != \'未填写\''
     cursor.execute(sql)
     result = cursor.fetchall()
     conn.commit()
@@ -85,7 +85,7 @@ def get_fail_user(last_id=0):
 
 
 def delete_fail_user():
-    sql = "delete from user_info where  register_time = 0 and location != '未填写'"
+    sql = "delete from user_info where  register_time = 0 and level = 0  and location != '未填写'"
     sql_2 = "DELETE FROM extend_info WHERE `head_img` = ''"
     cursor.execute(sql)
     result = cursor.rowcount

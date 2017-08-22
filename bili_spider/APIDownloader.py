@@ -34,8 +34,8 @@ def get_info(id):
                           allow_redirects=1)
         decode_json = json.loads(r.text)
         return decode_json['data']
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
         return None
 
 

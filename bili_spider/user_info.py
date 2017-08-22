@@ -117,5 +117,5 @@ def deal_fans_num(fans_num: str):
 
 
 def deal_location(location):
-    return location or ''
+    return str(location).strip() or ''
 

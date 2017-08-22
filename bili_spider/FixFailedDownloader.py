@@ -22,8 +22,7 @@ options.add_argument('lang=zh_CN.UTF-8')
 driver = webdriver.Chrome(executable_path=r'./library/chromedriver.exe', desired_capabilities=DesiredCapabilities.CHROME, chrome_options=options)
 driver.set_window_position(-10000, 0)
 url = ("http://space.bilibili.com/", "/#!/index")
-last_id = 0
-info_arr = pydb.get_fail_user(last_id)
+info_arr = pydb.get_fail_user()
 for j in info_arr:
     i = j[0]
     data = {}
